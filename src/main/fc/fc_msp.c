@@ -900,6 +900,10 @@ static bool mspFcProcessOutCommand(uint16_t cmdMSP, sbuf_t *dst, mspPostProcessF
             sbufWriteU32(dst, debug[i]);      // 8 variables are here for general monitoring purpose
         }
         break;
+    
+    case MSP2_INAV_CUSTOM_DATA_0:
+            sbufWriteU32(dst, 500);      // just writes the number 500 for testing purposes
+        break;
 
     case MSP_UID:
         sbufWriteU32(dst, U_ID_0);
