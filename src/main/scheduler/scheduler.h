@@ -116,6 +116,13 @@ typedef enum {
 #ifdef USE_GLOBAL_FUNCTIONS
     TASK_GLOBAL_FUNCTIONS,
 #endif
+
+/*Modification*/
+#ifdef USE_SERIAL_TEST_MESSAGE
+    TASK_SERIAL_TEST_MESSAGE,
+#endif
+/*       */
+
 #ifdef USE_RPM_FILTER
     TASK_RPM_FILTER,
 #endif

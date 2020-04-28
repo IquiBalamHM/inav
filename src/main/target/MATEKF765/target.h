@@ -17,7 +17,7 @@
 
 
 #pragma once
-
+#define USE_SERIAL_TEST_MESSAGE
 #define USE_TARGET_IMU_HARDWARE_DESCRIPTORS
 #define USE_TARGET_CONFIG
 

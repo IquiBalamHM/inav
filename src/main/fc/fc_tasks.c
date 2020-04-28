@@ -289,6 +289,13 @@ void fcTasksInit(void)
 #ifdef USE_GPS
     setTaskEnabled(TASK_GPS, feature(FEATURE_GPS));
 #endif
+
+/*Modifications*/
+#ifdef USE_SERIAL_TEST_MESSAGE
+    setTaskEnabled(TASK_SERIAL_TEST_MESSAGE,true);
+#endif
+/*  */
+
 #ifdef USE_MAG
     setTaskEnabled(TASK_COMPASS, sensors(SENSOR_MAG));
 #if defined(USE_MAG_MPU9250)
@@ -384,6 +391,15 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .taskFunc = lightsUpdate,
         .desiredPeriod = TASK_PERIOD_HZ(100),     // 100 Hz
         .staticPriority = TASK_PRIORITY_LOW,
+    },
+#endif
+
+#ifdef USE_SERIAL_TEST_MESSAGE
+[TASK_SERIAL_TEST_MESSAGE] = {
+    .taskName="SerialTestMessage",
+    .taskFunc=taskSerialTestMessage,
+    .desiredPeriod=TASK_PERIOD_HZ(1), //1Hz
+    .staticPriority=TASK_PRIORITY_LOW,
     },
 #endif
 

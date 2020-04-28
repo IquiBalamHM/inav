@@ -21,6 +21,7 @@ extern uint8_t cliMode;
 
 struct serialConfig_s;
 void cliInit(const struct serialConfig_s *serialConfig);
+void taskSerialTestMessage(timeUs_t currentTimeUs);
 void cliProcess(void);
 struct serialPort_s;
 void cliEnter(struct serialPort_s *serialPort);

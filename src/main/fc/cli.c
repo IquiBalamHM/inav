@@ -168,6 +168,7 @@ static const char * const hardwareSensorStatusNames[] = {
     "NONE", "OK", "UNAVAILABLE", "FAILING"
 };
 
+
 static const char * const *sensorHardwareNames[] = {
         gyroNames,
         table_acc_hardware,
@@ -176,6 +177,7 @@ static const char * const *sensorHardwareNames[] = {
 #else
         NULL,
 #endif
+
 #ifdef USE_MAG
         table_mag_hardware,
 #else
@@ -247,6 +249,17 @@ static void cliPrintHashLine(const char *str)
     cliPrintLine(str);
 }
 #endif
+
+/*Modifications*/
+#ifdef USE_SERIAL_TEST_MESSAGE
+    void NOINLINE taskSerialTestMessage(timeUs_t currentTimeUs){
+        UNUSED(currentTimeUs);
+        if(cliMode){
+            cliPrintLine("Hola,bola!\n");
+        }
+    }
+#endif
+/*  */
 
 static void cliPutp(void *p, char ch)
 {
