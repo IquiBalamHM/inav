@@ -137,10 +137,23 @@ static uint32_t bufferIndex = 0;
 static void cliAssert(char *cmdline);
 #endif
 
+/*IBHM+ */
+#ifdef USE_SERIAL_TEST_MESSAGE
+#include "Example/Example.h"
+#endif
+/*IBHM- */
+
+
 #ifdef USE_CLI_BATCH
 static bool commandBatchActive = false;
 static bool commandBatchError = false;
 #endif
+
+/*IBHM + */
+#ifdef USE_SERIAL_TEST_MESSAGE
+ void rt_OneStep(void);
+ #endif
+/*IBHM - */
 
 // sync this with features_e
 static const char * const featureNames[] = {
@@ -168,6 +181,7 @@ static const char * const hardwareSensorStatusNames[] = {
     "NONE", "OK", "UNAVAILABLE", "FAILING"
 };
 
+
 static const char * const *sensorHardwareNames[] = {
         gyroNames,
         table_acc_hardware,
@@ -176,6 +190,7 @@ static const char * const *sensorHardwareNames[] = {
 #else
         NULL,
 #endif
+
 #ifdef USE_MAG
         table_mag_hardware,
 #else
@@ -247,6 +262,17 @@ static void cliPrintHashLine(const char *str)
     cliPrintLine(str);
 }
 #endif
+
+// /*Modifications*/
+// #ifdef USE_SERIAL_TEST_MESSAGE
+//     void NOINLINE taskSerialTestMessage(timeUs_t currentTimeUs){
+//         UNUSED(currentTimeUs);
+//         if(cliMode){
+//             cliPrintLine("Hola,bola!\n");
+//         }
+//     }
+// #endif
+// /*  */
 
 static void cliPutp(void *p, char ch)
 {
@@ -3604,3 +3630,52 @@ void cliInit(const serialConfig_t *serialConfig)
 {
     UNUSED(serialConfig);
 }
+
+/* AAO +*/
+#ifdef USE_SERIAL_TEST_MESSAGE
+void NOINLINE taskSerialTestMessage(timeUs_t currentTimeUs){
+    UNUSED(currentTimeUs);
+    if (cliMode) {
+        Example_U.coolant_temp = 20;
+        rt_OneStep();
+        cliPrintf("The temperature is: %d\n", Example_Y.Temperature);
+        if (Example_Y.error)
+            cliPrintf("Error: Out of range\n");
+        else
+            cliPrintf("No Error: In range\n");
+    }
+}
+
+void rt_OneStep(void)
+{
+  static boolean_T OverrunFlag = false;
+ 
+  /* Disable interrupts here */
+ 
+  /* Check for overrun */
+  if (OverrunFlag) {
+    rtmSetErrorStatus(Example_M, "Overrun");
+    return;
+  }
+ 
+  OverrunFlag = true;
+ 
+  /* Save FPU context here (if necessary) */
+  /* Re-enable timer or interrupt here */
+  /* Set model inputs here */
+ 
+  /* Step the model */
+  Example_step();
+ 
+  /* Get model outputs here */
+ 
+  /* Indicate task complete */
+  OverrunFlag = false;
+ 
+  /* Disable interrupts here */
+  /* Restore FPU context here (if necessary) */
+  /* Enable interrupts here */
+}
+
+
+#endif

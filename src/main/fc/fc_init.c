@@ -151,6 +151,14 @@
 extern void initialisePreBootHardware(void);
 #endif
 
+/*IBHM + */
+#ifdef USE_SERIAL_TEST_MESSAGE
+#include "Example/Example.h"
+#include "Example/rtwtypes.h"
+#endif
+/*IBHM - */
+
+
 extern uint8_t motorControlEnable;
 
 typedef enum {
@@ -576,6 +584,18 @@ void init(void)
     uavInterconnectBusInit();
 #endif
 
+// /* IBHM +*/
+// #ifdef USE_SERIAL_TEST_MESSAGE
+//     [TASK_SERIAL_TEST_MESSAGE] = {
+//         .taskName = "SerialTestMessage",
+//         .taskFunc = taskSerialTestMessage,
+//         .desiredPeriod = TASK_PERIOD_HZ(1),   // 1 Hz
+//         .staticPriority = TASK_PRIORITY_LOW,
+//     },
+// #endif
+// /* IBHM -*/
+
+
 #ifdef USE_GPS
     if (feature(FEATURE_GPS)) {
         gpsInit();
@@ -691,4 +711,10 @@ void init(void)
 #endif
 
     systemState |= SYSTEM_STATE_READY;
+    
+#ifdef USE_SERIAL_TEST_MESSAGE
+     Example_initialize();
+#endif
 }
+
+

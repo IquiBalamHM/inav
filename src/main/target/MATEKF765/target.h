@@ -77,6 +77,7 @@
 #define I2C2_SCL                PB10
 #define I2C2_SDA                PB11
 
+
 #define USE_BARO
 #define BARO_I2C_BUS            BUS_I2C2
 #define USE_BARO_BMP280
@@ -197,6 +198,10 @@
 #define CURRENT_METER_SCALE         250
 
 #define USE_SERIAL_4WAY_BLHELI_INTERFACE
+
+/* IBHM +*/
+#define USE_SERIAL_TEST_MESSAGE
+/* IBHM -*/
 
 #define TARGET_IO_PORTA 0xffff
 #define TARGET_IO_PORTB 0xffff

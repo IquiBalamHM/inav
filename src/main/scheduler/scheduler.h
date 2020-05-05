@@ -89,6 +89,11 @@ typedef enum {
 #ifdef USE_PWM_SERVO_DRIVER
     TASK_PWMDRIVER,
 #endif
+/* IBHM +*/
+#ifdef USE_SERIAL_TEST_MESSAGE
+    TASK_SERIAL_TEST_MESSAGE,
+#endif
+/* IBHM -*/
 #ifdef STACK_CHECK
     TASK_STACK_CHECK,
 #endif

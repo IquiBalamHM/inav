@@ -151,6 +151,7 @@ COMMON_SRC = \
             blackbox/blackbox_encoding.c \
             blackbox/blackbox_io.c \
             cms/cms.c \
+            Example/Example.c \
             cms/cms_menu_battery.c \
             cms/cms_menu_blackbox.c \
             cms/cms_menu_builtin.c \
