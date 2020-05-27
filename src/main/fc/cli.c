@@ -3617,12 +3617,21 @@ void cliInit(const serialConfig_t *serialConfig)
 
 /* AAO +*/
 #ifdef USE_CONTROLLER_TEST_MESSAGE
+volatile bool printCliFlag = false;
 void NOINLINE taskControllerTestMessage(timeUs_t currentTimeUs){
     UNUSED(currentTimeUs);
     if (cliMode) {
-        DroneCode_U.ReferenceValue = 1;
-        rt_OneStep();
-        cliPrintf("The temperature is: %d\n", DroneCode_Y.Bilinear_Response);
+        static long int i = 0;
+        if(!printCliFlag){
+            cliPrintf("Continous, Bilinear, ForwardDiff\n");
+            printCliFlag = true;
+        }
+        if (i <= (10 * 1000)) {  // i <= matlabSimulationRunTime / samplingRate
+            DroneCode_U.ReferenceValue = 1;
+            rt_OneStep();
+            cliPrintf("%d, %d, %d\n", DroneCode_Y.Continuous_Response, DroneCode_Y.Bilinear_Response, DroneCode_Y.Forward_Response);
+        }
+        i++;    
     }
 }
 void rt_OneStep(void)
@@ -3632,36 +3641,37 @@ void rt_OneStep(void)
     /***********************************************
      * Check and see if base step time is too fast *
      ***********************************************/
-    if (OverrunFlags[0]++) {
-        rtmSetErrorStatus(RT_MDL, "Overrun");
-    }
+    //COMMENT
+    // if (OverrunFlags[0]++) {
+    //     rtmSetErrorStatus(RT_MDL, "Overrun");
+    // }
 
-    /*************************************************
-     * Check and see if an error status has been set *
-     * by an overrun or by the generated code.       *
-     *************************************************/
-    if (rtmGetErrorStatus(RT_MDL) != NULL) {
-        return;
-    }
+    // /*************************************************
+    //  * Check and see if an error status has been set *
+    //  * by an overrun or by the generated code.       *
+    //  *************************************************/
+    // if (rtmGetErrorStatus(RT_MDL) != NULL) {
+    //     return;
+    // }
 
-    /* Save FPU context here (if necessary) */
-    /* Reenable interrupts here */
-    /* Set model inputs here */
+    // /* Save FPU context here (if necessary) */
+    // /* Reenable interrupts here */
+    // /* Set model inputs here */
 
-    /**************
-     * Step model *
-     **************/
-    MODEL_STEP();
+    // /**************
+    //  * Step model *
+    //  **************/
+    DroneCode_step();
 
-    /* Get model outputs here */
+    // /* Get model outputs here */
 
-    /**************************
-     * Decrement overrun flag *
-     **************************/
-    OverrunFlags[0]--;
+    // /**************************
+    //  * Decrement overrun flag *
+    //  **************************/
+    // OverrunFlags[0]--;
 
-    rtExtModeCheckEndTrigger();
-
+    // rtExtModeCheckEndTrigger();
+    //COMMENT
     /* Disable interrupts here */
     /* Restore FPU context here (if necessary) */
     /* Reenable interrupts here */

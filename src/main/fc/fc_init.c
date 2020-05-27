@@ -698,11 +698,13 @@ void init(void)
     }
 #endif
 
-    systemState |= SYSTEM_STATE_READY;
-}
-
-/*AAO+ */
+/*IBHM this has to be inside the brackets+ */
 #ifdef USE_CONTROLLER_TEST_MESSAGE
     DroneCode_initialize();
 #endif
-/*AAO- */
+/*IBHM- */
+
+    systemState |= SYSTEM_STATE_READY;
+}
+
+
