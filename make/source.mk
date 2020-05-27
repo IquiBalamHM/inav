@@ -96,7 +96,6 @@ COMMON_SRC = \
             flight/rth_estimator.c \
             flight/servos.c \
             Controller/proyecto_final/DroneCode_grt_rtw/DroneCode.c \
-            Controller/proyecto_final/DroneCode_gtr_rtw/common/rt_main.c \
             flight/wind_estimator.c \
             flight/gyroanalyse.c \
             flight/rpm_filter.c \
