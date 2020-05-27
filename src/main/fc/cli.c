@@ -3627,9 +3627,9 @@ void NOINLINE taskControllerTestMessage(timeUs_t currentTimeUs){
             printCliFlag = true;
         }
         if (i <= (10 * 1000)) {  // i <= matlabSimulationRunTime / samplingRate
-            DroneCode_U.ReferenceValue = 1;
+            DroneCode_U.ReferenceValue = (double)1.0;
             rt_OneStep();
-            cliPrintf("%d, %d, %d\n", DroneCode_Y.Continuous_Response, DroneCode_Y.Bilinear_Response, DroneCode_Y.Forward_Response);
+            cliPrintf("%f, %f, %f\n", DroneCode_Y.Continuous_Response, DroneCode_Y.Bilinear_Response, DroneCode_Y.Forward_Response);
         }
         i++;    
     }
