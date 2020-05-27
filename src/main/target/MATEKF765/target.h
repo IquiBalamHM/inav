@@ -208,3 +208,6 @@
 #define USE_DSHOT
 #define USE_ESC_SENSOR
 #define USE_SERIALSHOT
+/* IBHM +*/
+#define USE_CONTROLLER_TEST_MESSAGE
+/* IBHM -*/

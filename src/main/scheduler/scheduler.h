@@ -92,6 +92,13 @@ typedef enum {
 #ifdef STACK_CHECK
     TASK_STACK_CHECK,
 #endif
+
+/* AAO +*/
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+    TASK_CONTROLLER_TEST_MESSAGE,
+#endif
+/* AAO -*/
+
 #ifdef USE_OSD
     TASK_OSD,
 #endif

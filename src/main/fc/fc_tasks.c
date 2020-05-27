@@ -317,7 +317,14 @@ void fcTasksInit(void)
 #ifdef STACK_CHECK
     setTaskEnabled(TASK_STACK_CHECK, true);
 #endif
-#ifdef USE_PWM_SERVO_DRIVER
+
+/* IBHM +*/
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+    setTaskEnabled(TASK_CONTROLLER_TEST_MESSAGE, true);
+#endif
+/* IBHM -*/
+
+#ifdef USE_PWM_SERVO_DRIVERs
     setTaskEnabled(TASK_PWMDRIVER, feature(FEATURE_PWM_SERVO_DRIVER));
 #endif
 #ifdef USE_CMS
@@ -568,6 +575,19 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .staticPriority = TASK_PRIORITY_IDLE,
     },
 #endif
+
+/* IBHM +*/
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+    [TASK_CONTROLLER_TEST_MESSAGE] = {
+        .taskName = "SerialTestMessage",
+        .taskFunc = taskControllerTestMessage,
+        .desiredPeriod = TASK_PERIOD_HZ(1),   // 1 Hz
+        .staticPriority = TASK_PRIORITY_LOW,
+    },
+#endif
+/* IBHM -*/
+
+
 #ifdef USE_RPM_FILTER
     [TASK_RPM_FILTER] = {
         .taskName = "RPM",

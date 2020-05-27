@@ -151,6 +151,14 @@
 extern void initialisePreBootHardware(void);
 #endif
 
+/*AAO+ */
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+#include "Controller/proyecto_final/DroneCode_grt_rtw/DroneCode.h"
+#include "Controller/proyecto_final/DroneCode_grt_rtw/rtwtypes.h"
+#endif
+/*AAO- */
+
+
 extern uint8_t motorControlEnable;
 
 typedef enum {
@@ -692,3 +700,9 @@ void init(void)
 
     systemState |= SYSTEM_STATE_READY;
 }
+
+/*AAO+ */
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+    DroneCode_initialize();
+#endif
+/*AAO- */

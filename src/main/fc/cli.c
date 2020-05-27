@@ -118,6 +118,12 @@ extern uint8_t __config_end;
 #include "telemetry/telemetry.h"
 #include "build/debug.h"
 
+/*IBHM*/
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+#include "Controller/proyecto_final/DroneCode_grt_rtw/DroneCode.h"
+#endif
+/*IBHM*/
+
 #if FLASH_SIZE > 128
 #define PLAY_SOUND
 #endif
@@ -140,6 +146,10 @@ static void cliAssert(char *cmdline);
 #ifdef USE_CLI_BATCH
 static bool commandBatchActive = false;
 static bool commandBatchError = false;
+#endif
+
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+void rt_OneStep(void);
 #endif
 
 // sync this with features_e
@@ -3604,3 +3614,59 @@ void cliInit(const serialConfig_t *serialConfig)
 {
     UNUSED(serialConfig);
 }
+
+/* AAO +*/
+#ifdef USE_CONTROLLER_TEST_MESSAGE
+void NOINLINE taskControllerTestMessage(timeUs_t currentTimeUs){
+    UNUSED(currentTimeUs);
+    if (cliMode) {
+        DroneCode_U.ReferenceValue = 1;
+        rt_OneStep();
+        cliPrintf("The temperature is: %d\n", DroneCode_Y.Bilinear_Response);
+    }
+}
+void rt_OneStep(void)
+{
+    /* Disable interrupts here */
+
+    /***********************************************
+     * Check and see if base step time is too fast *
+     ***********************************************/
+    if (OverrunFlags[0]++) {
+        rtmSetErrorStatus(RT_MDL, "Overrun");
+    }
+
+    /*************************************************
+     * Check and see if an error status has been set *
+     * by an overrun or by the generated code.       *
+     *************************************************/
+    if (rtmGetErrorStatus(RT_MDL) != NULL) {
+        return;
+    }
+
+    /* Save FPU context here (if necessary) */
+    /* Reenable interrupts here */
+    /* Set model inputs here */
+
+    /**************
+     * Step model *
+     **************/
+    MODEL_STEP();
+
+    /* Get model outputs here */
+
+    /**************************
+     * Decrement overrun flag *
+     **************************/
+    OverrunFlags[0]--;
+
+    rtExtModeCheckEndTrigger();
+
+    /* Disable interrupts here */
+    /* Restore FPU context here (if necessary) */
+    /* Reenable interrupts here */
+
+} /* end rtOneStep */
+#endif
+/* IBHM */
+
