@@ -1,3 +1,4 @@
+
 /*
  * This file is part of Cleanflight.
  *
@@ -347,7 +348,13 @@ void fcTasksInit(void)
 #ifdef USE_GLOBAL_FUNCTIONS
     setTaskEnabled(TASK_GLOBAL_FUNCTIONS, true);
 #endif
+/* DGF+ */
+#ifdef TEST_NOCONTROLLER
+    setTaskEnabled(TASK_TEST_NOCONTROLLER, true);
+#endif  
+/* DGF- */
 }
+
 
 cfTask_t cfTasks[TASK_COUNT] = {
     [TASK_SYSTEM] = {
@@ -576,4 +583,16 @@ cfTask_t cfTasks[TASK_COUNT] = {
         .staticPriority = TASK_PRIORITY_LOW,
     },
 #endif
+
+/* IBHM+ */
+#ifdef TEST_NOCONTROLLER
+    [TASK_TEST_NOCONTROLLER] = {
+        .taskName = "TestNoController",
+        .taskFunc = taskTestNoController,
+        .desiredPeriod = TASK_PERIOD_HZ(1000),   // 50 Hz
+        .staticPriority = TASK_PRIORITY_LOW,
+    },
+#endif
+/* IBHM- */
+
 };
