@@ -147,6 +147,13 @@
 #include "hardware_revision.h"
 #endif
 
+/*IBHM+ */
+#ifdef AEC_TEST
+#include "AEC_ert_rtw/AEC.h"
+#include "AEC_ert_rtw/rtwtypes.h"
+#endif
+/*IBHM- */
+
 #ifdef USE_HARDWARE_PREBOOT_SETUP
 extern void initialisePreBootHardware(void);
 #endif
@@ -299,25 +306,18 @@ void init(void)
     /*
     drv_pwm_config_t pwm_params;
     memset(&pwm_params, 0, sizeof(pwm_params));
-
     // when using airplane/wing mixer, servo/motor outputs are remapped
     pwm_params.flyingPlatformType = mixerConfig()->platformType;
-
     pwm_params.useParallelPWM = (rxConfig()->receiverType == RX_TYPE_PWM);
     pwm_params.usePPM = (rxConfig()->receiverType == RX_TYPE_PPM);
     pwm_params.useSerialRx = (rxConfig()->receiverType == RX_TYPE_SERIAL);
-
     pwm_params.useServoOutputs = isMixerUsingServos();
     pwm_params.servoCenterPulse = servoConfig()->servoCenterPulse;
     pwm_params.servoPwmRate = servoConfig()->servoPwmRate;
-
-
     pwm_params.enablePWMOutput = feature(FEATURE_PWM_OUTPUT_ENABLE);
-
 #if defined(USE_RX_PWM) || defined(USE_RX_PPM)
     pwmRxInit(systemConfig()->pwmRxInputFilteringMode);
 #endif
-
 #ifdef USE_PWM_SERVO_DRIVER
     // If external PWM driver is enabled, for example PCA9685, disable internal
     // servo handling mechanism, since external device will do that
@@ -691,4 +691,10 @@ void init(void)
 #endif
 
     systemState |= SYSTEM_STATE_READY;
+
+/*IBHM+ */
+#ifdef AEC_TEST
+    AEC_initialize();
+#endif
+/*IBHM- */
 }

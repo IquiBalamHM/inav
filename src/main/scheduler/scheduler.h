@@ -98,6 +98,9 @@ typedef enum {
 #ifdef USE_CMS
     TASK_CMS,
 #endif
+#ifdef AEC_TEST
+    TASK_SERIAL_TEST_MESSAGE,
+#endif
 #ifdef USE_OPFLOW
     TASK_OPFLOW,
 #endif
