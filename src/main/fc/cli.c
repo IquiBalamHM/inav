@@ -3628,7 +3628,13 @@ void NOINLINE taskSerialTestMessage(timeUs_t currentTimeUs){
             cliPrintf("AltitudeError, ElevCmd\n");
             printCliFlag = true;
         }
-        if (i <= (100 * 1000)) {  // i <= matlabSimulationRunTime / samplingRate
+        if (i > 0 && i <= 100){
+            AEC_U.AltCmd = (double)400;
+            AEC_U.Theta = (double)-20;
+            rt_OneStep();
+            cliPrintf("%f,%f\n", AEC_Y.AltError, AEC_Y.ElevCmd);
+        }
+        else if (i> 100 && i <= (3 * 1000)) {  // i <= matlabSimulationRunTime / samplingRate
             AEC_U.AltCmd = (double)450;
             AEC_U.Theta = (double)-20;
             rt_OneStep();
