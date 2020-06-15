@@ -190,7 +190,7 @@ void init(void)
     systemState = SYSTEM_STATE_INITIALISING;
     printfSupportInit();
 
-    // Initialize system and CPU clocks to their initial values
+    // Initialize system and CPU clocks to their initial values.
     systemInit();
 
     // initialize IO (needed for all IO operations)
